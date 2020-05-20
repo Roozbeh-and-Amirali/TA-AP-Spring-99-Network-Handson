@@ -9,15 +9,12 @@ public class Server {
     public static void main(String[] args) throws Exception {
         ServerSocket serverSocket = new ServerSocket(3000);
 
-        Socket socket = serverSocket.accept();
-        System.out.println("Client Connected!");
+        while ( true ) {
+            Socket socket = serverSocket.accept();
+            ClientHandler temp = new ClientHandler( socket );
+            ( new Thread( temp ) ).start();
 
-        DataInputStream dis = new DataInputStream(socket.getInputStream());
-        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-
-        String incomming = dis.readUTF();
-        System.out.println(incomming);
-
+        }
 
     }
 }
