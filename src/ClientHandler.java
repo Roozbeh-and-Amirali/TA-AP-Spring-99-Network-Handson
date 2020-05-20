@@ -17,6 +17,7 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
 
+    	// Get a username from client. Check if it is unique. if not, send an error message to client and wait for another username.
         try {
             boolean isUsernameOk = false;
             String username = "";
@@ -31,14 +32,14 @@ public class ClientHandler implements Runnable {
                     isUsernameOk = true;
                 }
             }
-            Server.users.put(username, this);
+            Server.users.put(username, this);       // Create the user in server
             System.out.println("User " + username + " Connected!");
 
             while (true) {
-                String targetName = this.dis.readUTF();
-                String message = this.dis.readUTF();
-                ClientHandler targetHandler = Server.users.get(targetName);
-                targetHandler.dos.writeUTF(username + " says: " + message);
+                String targetName = this.dis.readUTF();     // Get a string from client. It's supposed to be the target username.
+                String message = this.dis.readUTF();        // Get another string from client, indicating message.
+                ClientHandler targetHandler = Server.users.get(targetName);     // Get the handler for the target username.
+                targetHandler.dos.writeUTF(username + " says: " + message);     // Write the message to target username's outputstream.
             }
 
         } catch (Exception e) {

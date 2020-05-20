@@ -9,9 +9,11 @@ public class Client {
 
     public static void main(String[] args) throws Exception{
 
-        Socket socket = new Socket("localhost",3000);
+        Socket socket = new Socket("localhost",3000);       // connect to 3000 port on local host.
         DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
         DataInputStream dis = new DataInputStream(socket.getInputStream());
+
+        // Get a username from user. Send it to server and see if it's ok or not.
         Scanner in = new Scanner( System.in );
         boolean isUsernameOk = false;
         while (!isUsernameOk){
@@ -25,6 +27,7 @@ public class Client {
                 System.out.println("UserName already exists");
         }
 
+        // This thread waits for server to send a message to it. It then prints it in console.
         Thread messageListener = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -36,9 +39,9 @@ public class Client {
                 }
             }
         });
-
         messageListener.start();
 
+        // This loop gets a target username and a message from user, and sends them to server respectively. 
         while ( true ) {
             System.out.println("Enter target's username: ");
             String targetName = in.nextLine();
